@@ -12,4 +12,4 @@ Clone the repository and navigate into the project directory:
 
 ```bash
 git clone https://github.com/lavirox1/smart-traffic-scheduler.git
-cd traffic-control
+cd traffic_control
