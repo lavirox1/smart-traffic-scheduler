@@ -11,5 +11,5 @@ This project simulates a four-way traffic intersection and uses an adaptive roun
 Clone the repository and navigate into the project directory:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/traffic-sim.git
+git clone https://github.com/lavirox1/CS50_project.git
 cd traffic-sim
