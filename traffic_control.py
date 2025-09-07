@@ -1,17 +1,27 @@
 import random as r
 
 
-def add_traffic(traffic: dict) -> tuple[dict, dict]:
+def add_traffic(traffic: dict, traffic_condition:str = 'medium') -> tuple[dict, dict]:
     # traffic coming following normal distribution (mean =2, sd = 2)
+    
+    match traffic_condition:
+        case 'high':
+            mean = 5
+        case 'medium':
+            mean = 3
+        case 'low':
+            mean = 1
+    
+
     new_added = {}
     for d in traffic:
-        new_cars = max(0, int(r.gauss(2, 2)))
+        new_cars = max(0, int(r.gauss(mean, 1)))
         traffic[d] += new_cars
         new_added[d] = new_cars
     return traffic, new_added
 
 
-def clear_traffic(traffic: dict, cycles: int = 10):
+def clear_traffic(traffic: dict, cycles: int = 10, traffic_condition : str = 'medium'):
     # uses weighted adaptive round robin scheduling
     for cycle in range(1, cycles + 1):
         print(f"\n\n===== Cycle {cycle} =====")
@@ -36,7 +46,7 @@ def clear_traffic(traffic: dict, cycles: int = 10):
                     print(f"{direction.capitalize():<11} {0:<9} {0:<9} {0:<9} {0:<10}")
 
         # new cars arrive
-        traffic, new_added = add_traffic(traffic)
+        traffic, new_added = add_traffic(traffic, traffic_condition)
 
         print("\nNew cars this cycle:")
         for d, n in new_added.items():
@@ -51,6 +61,7 @@ def clear_traffic(traffic: dict, cycles: int = 10):
 
 def get_values():
     traffic = {}
+    print()
     traffic['north'] = int(input("Enter number of cars in North Lane: "))
     traffic['east'] = int(input("Enter number of cars in East Lane: "))
     traffic['south'] = int(input("Enter number of cars in South Lane: "))
@@ -58,13 +69,19 @@ def get_values():
 
     cycles = int(input("Enter number of cycles to run: "))
 
-    return traffic,cycles
+    traffic_condition = input("Enter traffic conditions (high, medium, low) : ")
+
+    return traffic,cycles,traffic_condition
 
 
 def main():
-    traffic,cycles = get_values()
-    print("\nInitial traffic:", traffic)
-    clear_traffic(traffic, cycles)
+    
+    traffic,cycles,traffic_condition = get_values()
+
+    print("\nInitial traffic:")
+    for d, n in traffic.items():
+            print(f"{d.capitalize():<7}: {n}")
+    clear_traffic(traffic, cycles, traffic_condition)
 
 
 if __name__ == "__main__":
